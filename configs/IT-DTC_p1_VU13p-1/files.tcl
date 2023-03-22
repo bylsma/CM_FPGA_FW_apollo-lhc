@@ -35,6 +35,7 @@ set vhdl_files "\
      src/C2C_INTF/picoblaze/uC.vhd \
      src/C2C_INTF/picoblaze/picoblaze/cli.vhd \
      configs/${build_name}/it-dtc-fw/src/TCDS/FAKE_TCDS.vhd \
+     configs/${build_name}/it-dtc-fw/src/itdtc_top.vhd \
      "
 set xdc_files "\
     configs/${build_name}/src/top_pins.xdc \

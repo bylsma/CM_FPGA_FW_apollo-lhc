@@ -51,7 +51,7 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       type: "AXI4"
       addr:
-        offset: "0x80000000"
+        offset: "0xB0000000"
         range: "16M"
       data_width: "64"
       remote_slave: "1"

@@ -42,46 +42,51 @@ create_bd_port -dir O -type rst $AXI_MASTER_RSTN
 
 #create the reset logic
 set SYS_RESETER sys_reseter
-create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER
-#connect external reset
-connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER/ext_reset_in]
-#connect clock
-connect_bd_net [get_bd_ports $AXI_MASTER_CLK] [get_bd_pins $SYS_RESETER/slowest_sync_clk]
-
-
 set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
+IP_SYS_RESET [dict create device_name $SYS_RESETER \
+		  external_reset_n $EXT_RESET \
+		  slowest_clk $AXI_MASTER_CLK
+	     ]
+#create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER
+#connect external reset
+#connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER/ext_reset_in]
+#connect clock
+#connect_bd_net [get_bd_ports $AXI_MASTER_CLK] [get_bd_pins $SYS_RESETER/slowest_sync_clk]
+
+
+
 #create the reset to sys reseter and slave interconnect
 connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
 
-AXI_IP_C2C [dict create device_name ${C2C} \
-		axi_control [dict create axi_clk $AXI_MASTER_CLK \
-				 axi_rstn $AXI_MASTER_RSTN\
-				 axi_freq $AXI_MASTER_CLK_FREQ] \
-		primary_serdes 1 \
-		init_clk $EXT_CLK \
-		refclk_freq 200 \
-		c2c_master false \
-		speed 5 \
-	       ]
-if { [info exists C2CB] } {
-    AXI_IP_C2C [dict create device_name ${C2CB} \
-		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
-				     axi_rstn $AXI_MASTER_RSTN\
-				     axi_freq $AXI_MASTER_CLK_FREQ] \
-		    primary_serdes ${C2C}_PHY \
-		    init_clk $EXT_CLK \
-		    refclk_freq 200 \
-		    c2c_master false \
-		    speed 5 \
-		   ]
-}
+#AXI_IP_C2C [dict create device_name ${C2C} \
+#		axi_control [dict create axi_clk $AXI_MASTER_CLK \
+#				 axi_rstn $AXI_MASTER_RSTN\
+#				 axi_freq $AXI_MASTER_CLK_FREQ] \
+#		primary_serdes 1 \
+#		init_clk $EXT_CLK \
+#		refclk_freq 200 \
+#		c2c_master false \
+#		speed 5 \
+#	       ]
+#if { [info exists C2CB] } {
+#    AXI_IP_C2C [dict create device_name ${C2CB} \
+#		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
+#				     axi_rstn $AXI_MASTER_RSTN\
+#				     axi_freq $AXI_MASTER_CLK_FREQ] \
+#		    primary_serdes ${C2C}_PHY \
+#		    init_clk $EXT_CLK \
+#		    refclk_freq 200 \
+#		    c2c_master false \
+#		    speed 5 \
+#		   ]
+#}
 
 
 #================================================================================
 #  Create JTAG AXI Master
 #================================================================================
 set JTAG_AXI_MASTER JTAG_AXI_Master
-BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_MASTER_CLK} axi_rstn ${AXI_MASTER_RSTN}]
+#BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_MASTER_CLK} axi_rstn ${AXI_MASTER_RSTN}]
 
 #================================================================================
 #  Connect C2C master port to interconnect slave port
@@ -89,7 +94,7 @@ BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_
 set mAXI [list ${C2C}/m_axi ${C2CB}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
 set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
 set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
-[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
+#[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
 
 
 
