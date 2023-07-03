@@ -1268,7 +1268,7 @@ ROM_DL_2S_4_B_04_i : entity work.ROM_DL_2S_4_B_04
   );
 
 DL_ADDR_loop : for var in enum_dl_39 generate
-  constant N_EVENTS  : natural := 18;  --! Number of events in data link input memory
+  constant N_EVENTS  : natural := 20;  --! Number of events in data link input memory
 begin
   rd_dl_addr: process (sc_clk) is
   begin  -- process rd_dl_addr
@@ -1289,8 +1289,7 @@ begin
 end generate DL_ADDR_loop;
 
 
---  sc_rst <= SC_RESET OR TCRAM_RST OR AXI_RESET OR vio_sc_rst;
-  sc_rst <= SC_RESET OR vio_sc_rst;
+  sc_rst <= SC_RESET OR TCRAM_RST OR AXI_RESET OR vio_sc_rst;
   START_FIRST_LINK    <=  TCRAM_START OR vio_sc_start;
       
   procStart : process(sc_clk, vio_sc_rst, START_FIRST_LINK)
@@ -1301,8 +1300,7 @@ end generate DL_ADDR_loop;
     variable EVENT_COUNT : integer := -1;
   begin
   
---    if (vio_sc_rst = '1' or TCRAM_RST = '1') then
-    if (vio_sc_rst = '1') then
+    if (vio_sc_rst = '1' or TCRAM_RST = '1') then
       SC_RESET <= '1';
       IR_START <= '0';
       IR_BX_IN <= "111";
@@ -1701,82 +1699,82 @@ end generate BW_46_loop;
 --end generate TF_comp_err_loop;
 
 
-BarOnly_vio_0 : entity work.bar_only_vio_0
-  PORT MAP (
-    clk => clk_50,
-    probe_in0(0)  => sc_rst,
-    probe_in1(0)  => IR_START,
-    probe_in2(0)  => bw_enb(L1L2_L3),
-    probe_in3(0)  => tw_enb(L1L2),
-    probe_in4(0)  => tf_enb(L1L2),
-    probe_in5(0)  => START_FIRST_LINK,
-    probe_in6(0)  => error_flag(L1L2),
-    probe_in7(0)  => error_flag(L2L3),
-    probe_in8(0)  => error_flag(L3L4),
-    probe_in9(0)  => error_flag(L5L6),
-    probe_in10    => errors(L1L2),
-    probe_in11    => errors(L2L3),
-    probe_in12    => errors(L3L4),
-    probe_in13    => errors(L5L6),
-    probe_out0(0) => vio_sc_rst,
-    probe_out1(0) => vio_sc_start,
-    probe_out2    => vio_sc_ena,
-    probe_out3    => vio_sc_enb,
-    probe_out4    => vio_clk_sel
-  );
+--BarOnly_vio_0 : entity work.bar_only_vio_0
+--  PORT MAP (
+--    clk => clk_50,
+--    probe_in0(0)  => sc_rst,
+--    probe_in1(0)  => IR_START,
+--    probe_in2(0)  => bw_enb(L1L2_L3),
+--    probe_in3(0)  => tw_enb(L1L2),
+--    probe_in4(0)  => tf_enb(L1L2),
+--    probe_in5(0)  => START_FIRST_LINK,
+--    probe_in6(0)  => error_flag(L1L2),
+--    probe_in7(0)  => error_flag(L2L3),
+--    probe_in8(0)  => error_flag(L3L4),
+--    probe_in9(0)  => error_flag(L5L6),
+--    probe_in10    => errors(L1L2),
+--    probe_in11    => errors(L2L3),
+--    probe_in12    => errors(L3L4),
+--    probe_in13    => errors(L5L6),
+--    probe_out0(0) => vio_sc_rst,
+--    probe_out1(0) => vio_sc_start,
+--    probe_out2    => vio_sc_ena,
+--    probe_out3    => vio_sc_enb,
+--    probe_out4    => vio_clk_sel
+--  );
 
-baronly_no_comp_ila_0 : entity work.baronly_no_comp_ila
-PORT MAP (
-	clk => sc_clk,
-	probe0(0)   => sc_rst, 
-	probe1(0)   => START_FIRST_LINK, 
-	probe2(0)   => ir_start, 
-	probe3      => IR_BX_IN, 
-    probe4(0)   => DL_39_link_read(PS10G_1_A),
-    probe5(0)   => DL_39_link_read(PS_1_A),
-    probe6(0)   => DL_39_link_read(twoS_1_A),
-    probe7      => DL_39_link_AV_dout(PS10G_1_A),
-    probe8      => DL_39_link_AV_dout(PS_1_A),
-    probe9      => DL_39_link_AV_dout(twoS_1_A),
-    probe10(0)  => DL_39_link_empty_neg(PS10G_1_A),
-    probe11(0)  => DL_39_link_empty_neg(PS_1_A),
-    probe12(0)  => DL_39_link_empty_neg(twoS_1_A),
-    probe13     => FT_BX_out, 
-	probe14(0)  => FT_BX_OUT_VLD, 
-	probe15(0)  => FT_DONE, 
-    probe16(0)  => TW_84_stream_A_full_neg(L1L2),
-    probe17(0)  => TW_84_stream_A_write(L1L2),
-    probe18     => tw_addr(L1L2),
-    probe19     => TW_84_stream_AV_din(L1L2),
-    probe20(0)  => TW_84_stream_A_full_neg(L2L3),
-    probe21(0)  => TW_84_stream_A_write(L2L3),
-    probe22     => tw_addr(L2L3),
-    probe23     => TW_84_stream_AV_din(L2L3),
-    probe24(0)  => TW_84_stream_A_full_neg(L3L4),
-    probe25(0)  => TW_84_stream_A_write(L3L4),
-    probe26     => tw_addr(L3L4),
-    probe27     => TW_84_stream_AV_din(L3L4),
-    probe28(0)  => TW_84_stream_A_full_neg(L5L6),
-    probe29(0)  => TW_84_stream_A_write(L5L6),
-    probe30     => tw_addr(L5L6),
-    probe31     => TW_84_stream_AV_din(L5L6),
-    probe32(0)  => BW_46_stream_A_full_neg(L1L2_L3),
-    probe33(0)  => BW_46_stream_A_write(L1L2_L3),
-    probe34     => bw_addr(L1L2_L3),
-    probe35     => BW_46_stream_AV_din(L1L2_L3),
-    probe36(0)  => BW_46_stream_A_full_neg(L1L2_L4),
-    probe37(0)  => BW_46_stream_A_write(L1L2_L4),
-    probe38     => bw_addr(L1L2_L4),
-    probe39     => BW_46_stream_AV_din(L1L2_L4),
-    probe40(0)  => BW_46_stream_A_full_neg(L1L2_L5),
-    probe41(0)  => BW_46_stream_A_write(L1L2_L5),
-    probe42     => bw_addr(L1L2_L5),
-    probe43     => BW_46_stream_AV_din(L1L2_L5),
-    probe44(0)  => BW_46_stream_A_full_neg(L1L2_L6),
-    probe45(0)  => BW_46_stream_A_write(L1L2_L6),
-    probe46     => bw_addr(L1L2_L6),
-    probe47     => BW_46_stream_AV_din(L1L2_L6)
-);
+--baronly_no_comp_ila_0 : entity work.baronly_no_comp_ila
+--PORT MAP (
+--	clk => sc_clk,
+--	probe0(0)   => sc_rst, 
+--	probe1(0)   => START_FIRST_LINK, 
+--	probe2(0)   => ir_start, 
+--	probe3      => IR_BX_IN, 
+--    probe4(0)   => DL_39_link_read(PS10G_1_A),
+--    probe5(0)   => DL_39_link_read(PS_1_A),
+--    probe6(0)   => DL_39_link_read(twoS_1_A),
+--    probe7      => DL_39_link_AV_dout(PS10G_1_A),
+--    probe8      => DL_39_link_AV_dout(PS_1_A),
+--    probe9      => DL_39_link_AV_dout(twoS_1_A),
+--    probe10(0)  => DL_39_link_empty_neg(PS10G_1_A),
+--    probe11(0)  => DL_39_link_empty_neg(PS_1_A),
+--    probe12(0)  => DL_39_link_empty_neg(twoS_1_A),
+--    probe13     => FT_BX_out, 
+--	probe14(0)  => FT_BX_OUT_VLD, 
+--	probe15(0)  => FT_DONE, 
+--    probe16(0)  => TW_84_stream_A_full_neg(L1L2),
+--    probe17(0)  => TW_84_stream_A_write(L1L2),
+--    probe18     => tw_addr(L1L2),
+--    probe19     => TW_84_stream_AV_din(L1L2),
+--    probe20(0)  => TW_84_stream_A_full_neg(L2L3),
+--    probe21(0)  => TW_84_stream_A_write(L2L3),
+--    probe22     => tw_addr(L2L3),
+--    probe23     => TW_84_stream_AV_din(L2L3),
+--    probe24(0)  => TW_84_stream_A_full_neg(L3L4),
+--    probe25(0)  => TW_84_stream_A_write(L3L4),
+--    probe26     => tw_addr(L3L4),
+--    probe27     => TW_84_stream_AV_din(L3L4),
+--    probe28(0)  => TW_84_stream_A_full_neg(L5L6),
+--    probe29(0)  => TW_84_stream_A_write(L5L6),
+--    probe30     => tw_addr(L5L6),
+--    probe31     => TW_84_stream_AV_din(L5L6),
+--    probe32(0)  => BW_46_stream_A_full_neg(L1L2_L3),
+--    probe33(0)  => BW_46_stream_A_write(L1L2_L3),
+--    probe34     => bw_addr(L1L2_L3),
+--    probe35     => BW_46_stream_AV_din(L1L2_L3),
+--    probe36(0)  => BW_46_stream_A_full_neg(L1L2_L4),
+--    probe37(0)  => BW_46_stream_A_write(L1L2_L4),
+--    probe38     => bw_addr(L1L2_L4),
+--    probe39     => BW_46_stream_AV_din(L1L2_L4),
+--    probe40(0)  => BW_46_stream_A_full_neg(L1L2_L5),
+--    probe41(0)  => BW_46_stream_A_write(L1L2_L5),
+--    probe42     => bw_addr(L1L2_L5),
+--    probe43     => BW_46_stream_AV_din(L1L2_L5),
+--    probe44(0)  => BW_46_stream_A_full_neg(L1L2_L6),
+--    probe45(0)  => BW_46_stream_A_write(L1L2_L6),
+--    probe46     => bw_addr(L1L2_L6),
+--    probe47     => BW_46_stream_AV_din(L1L2_L6)
+--);
 
 --bar_only_debug_ila_0 : entity work.bar_only_debug_ila_0
 --PORT MAP (

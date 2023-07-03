@@ -213,6 +213,8 @@ set xci_files "\
               src/tt_master/IntegrationTests/BarrelConfig/IRtoTB/script/Work/Work.srcs/sources_1/ip/FT_L2L3/FT_L2L3.xci \
               src/tt_master/IntegrationTests/BarrelConfig/IRtoTB/script/Work/Work.srcs/sources_1/ip/FT_L3L4/FT_L3L4.xci \
               src/tt_master/IntegrationTests/BarrelConfig/IRtoTB/script/Work/Work.srcs/sources_1/ip/FT_L5L6/FT_L5L6.xci \
+    	      cores/TC_BRAM/BarOnly_Mem_1/BarOnly_Mem_1.xci \
+    	      cores/TC_BRAM/BarOnly_512_Mem/BarOnly_512_Mem.xci \
     	      cores/TC_BRAM/ROM_DL_2S_1_A_04/ROM_DL_2S_1_A_04.xci \
     	      cores/TC_BRAM/ROM_DL_2S_1_B_04/ROM_DL_2S_1_B_04.xci \
     	      cores/TC_BRAM/ROM_DL_2S_2_A_04/ROM_DL_2S_2_A_04.xci \
@@ -249,13 +251,11 @@ set xci_files "\
     	      cores/TC_BRAM/ROM_DL_PS_1_B_04/ROM_DL_PS_1_B_04.xci \
     	      cores/TC_BRAM/ROM_DL_PS_2_A_04/ROM_DL_PS_2_A_04.xci \
     	      cores/TC_BRAM/ROM_DL_PS_2_B_04/ROM_DL_PS_2_B_04.xci \
+    	      cores/TC_BRAM/ROM_TF_L1L2/ROM_TF_L1L2.xci \
+    	      cores/TC_BRAM/ROM_TF_L2L3/ROM_TF_L2L3.xci \
+    	      cores/TC_BRAM/ROM_TF_L3L4/ROM_TF_L3L4.xci \
+    	      cores/TC_BRAM/ROM_TF_L5L6/ROM_TF_L5L6.xci \
     	      cores/TC_BRAM/bar_only_vio_0/bar_only_vio_0.xci \
     	      cores/TC_BRAM/baronly_no_comp_ila/baronly_no_comp_ila.xci \
-    	      cores/TC_BRAM/BarOnly_Mem_1/BarOnly_Mem_1.xci \
     	      "
-#    	      cores/TC_BRAM/ROM_TF_L1L2/ROM_TF_L1L2.xci \
-#    	      cores/TC_BRAM/ROM_TF_L2L3/ROM_TF_L2L3.xci \
-#    	      cores/TC_BRAM/ROM_TF_L3L4/ROM_TF_L3L4.xci \
-#    	      cores/TC_BRAM/ROM_TF_L5L6/ROM_TF_L5L6.xci \
-#    	      cores/TC_BRAM/BarOnly_512_Mem/BarOnly_512_Mem.xci \
 
